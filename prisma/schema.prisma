@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id                String        @id @default(uuid())
+  name              String
+  phone             String
+  address           String
+  country           String
+  AccountType       String
+  email             String        @unique
+  password          String
+  confirm           String?
+  token             String?
+  isVerified        Boolean       @default(false)
+  refbonus          Int?          @default(0)
+  refcode           String?
+  walletBalance     Int?          @default(0)
+  ethAddress        String?
+  btcAddress        String?
+  usdtAddress       String?
+  investmentBalance Int?          @default(0)
+  profitBalance     Int?          @default(0)
+  targetBalance     Int?          @default(0)
+  updatedAt         DateTime      @updatedAt
+  createdAt         DateTime      @default(now())
+  sessions          Session[]
+  transactions      Transaction[]
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  sessions  AdminSession[]
+}
+
+model AdminSession {
+  id        String   @id @default(uuid())
+  adminId   String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  admin     Admin    @relation(fields: [adminId], references: [id])
+}
+
+model Transaction {
+  id              String   @id @default(uuid())
+  userId          String
+  paymentMethod   String
+  transactionId   String
+  status          String
+  transactionType String
+  postType        String
+  amount          Int
+  type            String
+  pair            String?
+  createdAt       DateTime @default(now())
+  date            DateTime @default(now())
+  user            User     @relation(fields: [userId], references: [id])
+}
+
+model PaymentMethod {
+  id          String   @id @default(uuid())
+  name        String
+  address     String
+  description String
+  createdAt   DateTime @default(now())
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}
