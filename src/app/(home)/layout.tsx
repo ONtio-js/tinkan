@@ -80,12 +80,12 @@ export default function HomeLayout({
 						content='images/features/feature1.jpg'
 					/>
 					<link
-						href='images/favicon.png'
+						href='../favicon.ico'
 						rel='shortcut icon'
 						type='image/x-icon'
 					/>
 					<link
-						href='images/favicon.png'
+						href='../favicon.ico'
 						rel='apple-touch-icon'
 					/>
 				</Head>

@@ -1,7 +1,9 @@
 import { db } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 import { sendEmail } from '@/lib/email';
+import { unstable_noStore as noStore } from 'next/cache';
 export const getDepositRequest = async () => {
+	noStore();
 	const depositRequest = await db.transaction.findMany({
 		where: {
 			transactionType: 'deposit',
@@ -111,5 +113,17 @@ export const rejectDepositRequest = async (transactionId: string) => {
 
 	return {
 		success: 'Deposit request rejected successfully',
+	};
+};
+
+export const deleteDepositRequest = async (transactionId: string) => {
+	await db.transaction.delete({
+		where: {
+			id: transactionId,
+		},
+	});
+	revalidatePath('/admin/dashboard/deposit');
+	return {
+		success: 'Deposit request deleted successfully',
 	};
 };

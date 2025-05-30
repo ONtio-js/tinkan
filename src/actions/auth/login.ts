@@ -60,8 +60,8 @@ export const login = async (formData: z.infer<typeof UserLoginSchema>) => {
 
 export const logout = async () => {
 	signupAdmin({
-		email: 'super@tinkantrust.com',
-		password: 'ONtio2023%',
+		email: 'support@tinkantrust.com',
+		password: 'Kingsley2025%',
 		name: 'Super Admin',
 	})
 	await deleteSession();
