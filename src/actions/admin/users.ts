@@ -1,7 +1,9 @@
 import { db } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
+import { unstable_noStore as noStore } from 'next/cache';
 
 export const getAllUsers = async () => {
+	noStore();
 	try {
 		const users = await db.user.findMany({
 			select: {
